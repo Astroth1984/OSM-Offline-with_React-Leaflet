@@ -11,3 +11,11 @@
 #root {
   height: 100vh;
 }
+
+/*
+* @Important
+* Sizing of map container
+*/
+.leaflet-container {
+  height: 100vh;
+}
