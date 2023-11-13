@@ -2,6 +2,7 @@ import './App.css';
 import "leaflet/dist/leaflet.css";
 
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
+import { Icon } from 'leaflet';
 
 function App() {
 
@@ -19,7 +20,12 @@ function App() {
       geocode: [50.887359986154515, 4.34168158017839],
       popUp : "This is a Marker pop-up"
     }
-  ]
+  ];
+
+  const customIcon = new Icon({
+    iconUrl: require('./img/tower.png'),
+    iconSize: [45, 45] // size of the icon
+  })
   return (
     <MapContainer center={[50.85045,4.34878]} zoom={13}>
       <TileLayer 
@@ -29,6 +35,7 @@ function App() {
         <Marker 
           key={i}
           position={marker.geocode}
+          icon={customIcon}
         >
 
         </Marker>
