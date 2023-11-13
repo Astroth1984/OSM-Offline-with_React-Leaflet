@@ -19,3 +19,18 @@
 .leaflet-container {
   height: 100vh;
 }
+
+
+.cluster-icon {
+  height: 3rem;
+  width: 3rem;
+  border-radius: 50%;
+  background-color: #FF5A5F;
+  transform: translate(-20%, -10%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 900;
+  font-size: 1.2rem;
+  color: #fff;
+}

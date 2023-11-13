@@ -2,7 +2,7 @@ import './App.css';
 import "leaflet/dist/leaflet.css";
 
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import { Icon } from 'leaflet';
+import { Icon, divIcon, point } from 'leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 
 function App() {
@@ -26,14 +26,27 @@ function App() {
   const customIcon = new Icon({
     iconUrl: require('./img/tower.png'),
     iconSize: [45, 45] // size of the icon
-  })
+  });
+
+  // this func should return a divIcon element
+  const createCustomIconClusterIcon = (cluster) => {
+    // Display what you want inside the Cluster Icon - In my case the number of markers inside the Cluster
+    return new divIcon({
+      html: `<div class="cluster-icon">${cluster.getChildCount()}</div>`,
+      className: "custom-marker-cluster",
+      iconSize: point(33,33, true)
+    })
+  }
   return (
     <MapContainer center={[50.85045,4.34878]} zoom={13}>
       <TileLayer 
         url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
       />
 
-      <MarkerClusterGroup>
+      <MarkerClusterGroup
+        chunkedLoading
+        iconCreateFunction={createCustomIconClusterIcon}
+      >
         {markers.map((marker, i) => (
           <Marker 
             key={i}
