@@ -1,11 +1,14 @@
 import './App.css';
 
-
+import { MapContainer, TileLayer } from 'react-leaflet';
 
 function App() {
   return (
-    <div className="App">
-    </div>
+    <MapContainer center={[50.85045,4.34878]} zoom={13}>
+      <TileLayer 
+        url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+      />
+    </MapContainer>
   );
 }
 
