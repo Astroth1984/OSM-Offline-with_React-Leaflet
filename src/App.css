@@ -16,9 +16,9 @@
 * @Important
 * Sizing of map container
 */
-.leaflet-container {
-  height: 100vh;
-}
+/* .leaflet-container {
+  height: 300px;
+} */
 
 
 .cluster-icon {
