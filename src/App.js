@@ -1,37 +1,22 @@
 import './App.css';
 import "leaflet/dist/leaflet.css";
+import markers from './markers';
 
-import { MapContainer, TileLayer, Marker, Popup} from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, CircleMarker} from 'react-leaflet';
 import { Icon, divIcon, point } from 'leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
+import { useState } from 'react';
 
 
 
 function App() {
 
-  //Add Markers
-  const markers = [
-    {
-      geocode: [46.2097824357196, 6.139475957830832],
-      popUp: "I work here"
-    },
-    {
-      geocode: [46.20066430916326, 6.141922132426539],
-      popUp: "My Crush lives here. If you see her, say Hello!"
-    },
-    {
-      geocode: [46.20033757285177, 6.166340963156938],
-      popUp : "This is a Marker pop-up"
-    },
-    {
-      geocode: [46.19190116548555, 6.163336889092037],
-      popUp : "This is a Marker pop-up"
-    }
-  ];
+  const [showRange, setShowRange] = useState(false);
 
   const customIcon = new Icon({
     iconUrl: require('./img/tower.png'),
-    iconSize: [45, 45] // size of the icon
+    iconSize: [45, 45], // size of the icon
+
   });
 
   //this func should return a divIcon element
@@ -51,7 +36,7 @@ function App() {
     <MapContainer 
       center={[46.20482260019546, 6.14561285199199]} 
       zoom={14}
-      maxZoom={16}
+      maxZoom={17}
       minZoom={11}
       style={{ height: '100vh', width: '100%' }}
     >
@@ -64,13 +49,26 @@ function App() {
         iconCreateFunction={createCustomIconClusterIcon}
       >
         {markers.map((marker, i) => (
-          <Marker 
+          showRange ?  (
+            <CircleMarker 
+              key={i}
+              //position={marker.geocode}
+              center={marker.geocode} 
+              pathOptions={marker.pathOptions} 
+              radius={marker.range}
+              //icon={customIcon}
+            >
+              <Popup>{marker.popUp}</Popup>
+            </CircleMarker>
+          ) : (
+            <Marker 
             key={i}
             position={marker.geocode}
             icon={customIcon}
           >
             <Popup>{marker.popUp}</Popup>
           </Marker>
+          )
         ))}
       </MarkerClusterGroup>
       
