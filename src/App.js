@@ -2,7 +2,7 @@ import './App.css';
 import "leaflet/dist/leaflet.css";
 import markers from './markers';
 
-import { MapContainer, TileLayer, Marker, Popup, CircleMarker} from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, CircleMarker, LayersControl, FeatureGroup} from 'react-leaflet';
 import { Icon, divIcon, point } from 'leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import { useState } from 'react';
@@ -43,37 +43,46 @@ function App() {
       <TileLayer 
         url='http://localhost:3001/tiles/{z}/{x}/{y}.png'
       />
-
-      <MarkerClusterGroup
-        chunkedLoading
-        iconCreateFunction={createCustomIconClusterIcon}
-      >
-        {markers.map((marker, i) => (
-          showRange ?  (
-            <CircleMarker 
-              key={i}
-              //position={marker.geocode}
-              center={marker.geocode} 
-              pathOptions={marker.pathOptions} 
-              radius={marker.range}
-              //icon={customIcon}
+      <LayersControl position='topright'>
+        <LayersControl.Overlay checked name='marker with pop up'>
+          <FeatureGroup>
+            <MarkerClusterGroup
+              chunkedLoading
+              iconCreateFunction={createCustomIconClusterIcon}
             >
-              <Popup>{marker.popUp}</Popup>
-            </CircleMarker>
-          ) : (
-            <Marker 
-            key={i}
-            position={marker.geocode}
-            icon={customIcon}
-          >
-            <Popup>{marker.popUp}</Popup>
-          </Marker>
-          )
-        ))}
-      </MarkerClusterGroup>
-      
+              {markers.map((marker, i) =>(
+                <Marker 
+                  key={i}
+                  position={marker.geocode}
+                  icon={customIcon}
+                >
+                  <Popup>{marker.popUp}</Popup>
+                </Marker>
+              ))}
+            </MarkerClusterGroup>
+          </FeatureGroup>
+        </LayersControl.Overlay>
+        <LayersControl.Overlay name='Show range'>
+          <FeatureGroup>
+            <MarkerClusterGroup
+              chunkedLoading
+              iconCreateFunction={createCustomIconClusterIcon}
+            >
+              {markers.map((marker, i) =>(
+                <CircleMarker 
+                  key={i}
+                  center={marker.geocode} 
+                  pathOptions={marker.pathOptions} 
+                  radius={marker.range}
+                >
+                  <Popup>{marker.popUp}</Popup>
+                </CircleMarker>
+              ))}
+            </MarkerClusterGroup>
+          </FeatureGroup>
+        </LayersControl.Overlay>
+      </LayersControl>
     </MapContainer>
-
   );
 }
 
