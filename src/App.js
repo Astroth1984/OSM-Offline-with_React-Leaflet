@@ -1,19 +1,24 @@
 import './App.css';
-import { useState } from 'react';
 import markers from './markers';
 
 import "leaflet/dist/leaflet.css";
-import { MapContainer, TileLayer, Marker, Popup, CircleMarker, LayersControl, FeatureGroup} from 'react-leaflet';
+import { 
+  MapContainer, 
+  TileLayer, 
+  Marker, 
+  Popup, 
+  CircleMarker, 
+  LayersControl, 
+  FeatureGroup
+} from 'react-leaflet';
 import { Icon, divIcon, point } from 'leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 
 function App() {
 
-  const [showRange, setShowRange] = useState(false);
   const customIcon = new Icon({
     iconUrl: require('./img/tower.png'),
     iconSize: [45, 45], // size of the icon
-
   });
 
   //this func should return a divIcon element
