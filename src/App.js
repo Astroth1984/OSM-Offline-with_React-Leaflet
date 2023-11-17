@@ -1,18 +1,15 @@
 import './App.css';
-import "leaflet/dist/leaflet.css";
+import { useState } from 'react';
 import markers from './markers';
 
+import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Marker, Popup, CircleMarker, LayersControl, FeatureGroup} from 'react-leaflet';
 import { Icon, divIcon, point } from 'leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
-import { useState } from 'react';
-
-
 
 function App() {
 
   const [showRange, setShowRange] = useState(false);
-
   const customIcon = new Icon({
     iconUrl: require('./img/tower.png'),
     iconSize: [45, 45], // size of the icon
@@ -25,14 +22,11 @@ function App() {
     return new divIcon({
       html: `<div class="cluster-icon">${cluster.getChildCount()}</div>`,
       className: "custom-marker-cluster",
-      iconSize: point(25,25, true),
-      
-    })
+      iconSize: point(25,25, true)
+    });
   }
 
-
   return (
-
     <MapContainer 
       center={[46.20482260019546, 6.14561285199199]} 
       zoom={14}
@@ -46,7 +40,7 @@ function App() {
       <LayersControl position='topright'>
         <LayersControl.Overlay checked name='marker with pop up'>
           <FeatureGroup>
-            <MarkerClusterGroup
+            <MarkerClusterGroup 
               chunkedLoading
               iconCreateFunction={createCustomIconClusterIcon}
             >
@@ -85,5 +79,4 @@ function App() {
     </MapContainer>
   );
 }
-
 export default App;
