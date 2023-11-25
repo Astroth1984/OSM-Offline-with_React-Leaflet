@@ -12,14 +12,6 @@
   height: 100vh;
 }
 
-/*
-* @Important
-* Sizing of map container
-*/
-/* .leaflet-container {
-  height: 300px;
-} */
-
 
 .cluster-icon {
   height: 3rem;
