@@ -1,7 +1,7 @@
 # OSM Offline with React & Leaflet
 
 ## Description
-This Project is a simple prototype on how to use OpenStreetMap offline by servering map tiles with a local Node.js map-server from your own assets.
+This project leverages the power of OpenStreetMap (OSM) and React-Leaflet to create an interactive map experience with unique features. By implementing an offline capability, the project serves map tiles directly from its assets through a local map server, ensuring a seamless mapping experience even without an internet connection.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
