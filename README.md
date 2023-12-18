@@ -5,7 +5,15 @@ This project leverages the power of OpenStreetMap (OSM) and React-Leaflet to cre
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Key Features
+### 1. Offline OSM Integration:
+The project taps into the extensive OpenStreetMap data but takes it a step further by enabling offline usage. Map tiles are stored locally and served through a dedicated map server, guaranteeing accessibility without relying on external servers.
+
+### 2. Customized Shapes with React-Leaflet:
+Tailoring the map experience, the project introduces custom shapes on top of the map using the React-Leaflet library. This allows for the creation of unique overlays, enhancing the visual representation of geographical data.
+
+### 3. Marker Clustering:
+To optimize the display of numerous markers, the project implements marker clustering. This feature groups closely located markers into clusters, improving map readability and performance, especially in areas with dense marker concentrations.
 
 In the project directory, you can run:
 
