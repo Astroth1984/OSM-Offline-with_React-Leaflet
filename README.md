@@ -5,7 +5,7 @@ This project leverages the power of OpenStreetMap (OSM) and React-Leaflet to cre
 
 ## Key Features
 ### 1. Offline OSM Integration:
-The project taps into the extensive OpenStreetMap data but takes it a step further by enabling offline usage. Map tiles are stored locally and served through a dedicated map server, guaranteeing accessibility without relying on external servers.
+The project taps into the extensive OpenStreetMap data but takes it a step further by enabling offline usage. Map tiles are stored locally and served through a dedicated map server, guaranteeing accessibility without relying on external servers or APIs.
 
 ### 2. Customized Shapes with React-Leaflet:
 Tailoring the map experience, the project introduces custom shapes on top of the map using the React-Leaflet library. This allows for the creation of unique overlays, enhancing the visual representation of geographical data.
