@@ -16,6 +16,10 @@ export const nauticalMilesToMeters = (nm) => {
     return nm * 1852;
 }
 
+export const metersToNauticalMiles = (m) => {
+    return m * 0.00053996;
+}
+
 // Function to calculation the angle rotation for point intersection with polar range
 export const calculateIntersection = (center, range, angle) => {
     const intersectionPoint = [

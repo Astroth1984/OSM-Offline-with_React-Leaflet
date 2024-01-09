@@ -18,9 +18,11 @@ import L, {  Icon, divIcon, point } from 'leaflet';
 
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import { EditControl } from 'react-leaflet-draw';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Grid from './containers/Grid';
 import PolarGrid from './containers/PolarGrid';
+import { metersToNauticalMiles } from './utils/utils';
+import FiltersConfigPanel from './containers/FiltersPanel/FiltersConfigPanel';
 
 
 delete L.Icon.Default.prototype._getIconUrl;
@@ -30,10 +32,19 @@ L.Icon.Default.mergeOptions({
   iconSize: [40, 40],
 });
 
-
-
 function App() {
 
+  const [center, setCenter] = useState([46.20482260019546, 6.14561285199199]);
+
+  const [selectedMarker, setSelectedMarker] = useState(null);
+  const [gridData, setGridData] = useState([]);
+  // Function to handle selected marker fromConfiguration Panel
+  const handleMarkerSelect = (marker) => {
+    setSelectedMarker(marker);
+    setCenter(selectedMarker?.geocode);
+    console.log(center);
+    
+  };
 
   /**
    * Grid Properties
@@ -41,10 +52,10 @@ function App() {
    **/
   const [gridBottomLeft, setGridBottomLeft] = useState([46.20066430916326, 6.141922132426539]);
   const zoomGrid =  19; //max
-  const  cellSize = 80; //m
+  const  cellSize = 180; //m
   // const gridSize = 32 //rows
-  const xAxis = 14;
-  const yAxis = 14;
+  const xAxis = 7;
+  const yAxis = 7;
 
   const customIcon = new Icon({
     iconUrl: require('./img/tower.png'),
@@ -71,73 +82,93 @@ function App() {
   **/
  const _create = (e) => console.log(e);
 
+ useEffect(() => {
+  console.log('this is grid data in App ', gridData)
+ }, [center, gridData])
+
 
   return (
-    <MapContainer 
-      center={[46.20482260019546, 6.14561285199199]} 
-      zoom={14}
-      maxZoom={17}
-      minZoom={11}
-      style={{ height: '100vh', width: '100%' }}
-    >
-      <TileLayer 
-        url='http://localhost:3001/tiles/{z}/{x}/{y}.png'
-      />
 
-      {/* <Grid
-        markerPosition={gridBottomLeft}
-        cellSize={cellSize}
-        xSize={xAxis}
-        ySize={yAxis}
-      /> */}
+    <>
 
-      <PolarGrid />
-      <LayersControl position='topright'>
-        <LayersControl.Overlay checked name='Marker with pop up'>
-          <FeatureGroup>
-            <MarkerClusterGroup 
-              chunkedLoading
-              iconCreateFunction={createCustomIconClusterIcon}
-            >
-              {markers.map((marker, i) =>(
-                <Marker 
-                  key={i}
-                  position={marker.geocode}
-                  icon={customIcon}
-                >
-                  <Popup>{marker.popUp}</Popup>
-                </Marker>
-              ))}
-            </MarkerClusterGroup>
-          </FeatureGroup>
-        </LayersControl.Overlay>
-        <LayersControl.Overlay checked name='Show range'>
-          <FeatureGroup>
-            <MarkerClusterGroup
-              chunkedLoading
-              iconCreateFunction={createCustomIconClusterIcon}
-            >
-              {markers.map((marker, i) =>(
-                <Circle
-                  key={i}
-                  center={marker.geocode} 
-                  pathOptions={marker.pathOptions} 
-                  radius={marker.range}
-                >
-                </Circle>
-              ))}
-            </MarkerClusterGroup>
-          </FeatureGroup>
-        </LayersControl.Overlay>
-      </LayersControl>
+      <FiltersConfigPanel onMarkerSelect={handleMarkerSelect} onSubmitForm={setGridData} />
 
-      <FeatureGroup>
-        <EditControl 
-          position='bottomright' 
-          onCreated={_create}
+      <MapContainer 
+        center={center} 
+        zoom={14}
+        maxZoom={17}
+        minZoom={11}
+        style={{ height: '100vh', width: '100%' }}
+      >
+        <TileLayer 
+          url='http://localhost:3001/tiles/{z}/{x}/{y}.png'
         />
-      </FeatureGroup>
-    </MapContainer>
+
+        
+
+        
+        <LayersControl position='topright'>
+          <LayersControl.Overlay checked name='Marker with pop up'>
+            <FeatureGroup>
+              <MarkerClusterGroup 
+                chunkedLoading
+                iconCreateFunction={createCustomIconClusterIcon}
+              >
+                {markers.map((marker, i) => (
+                  <Marker 
+                    key={i}
+                    position={marker.geocode}
+                    icon={customIcon}
+                  >
+                    <Popup>{marker.popUp}</Popup>
+                  </Marker>
+                ))}
+              </MarkerClusterGroup>
+            </FeatureGroup>
+          </LayersControl.Overlay>
+          <LayersControl.Overlay checked name='Show range'>
+            <FeatureGroup>
+              <MarkerClusterGroup
+                chunkedLoading
+                iconCreateFunction={createCustomIconClusterIcon}
+              >
+                {markers.map((marker, i) =>(
+                  <Circle
+                    key={i}
+                    center={marker.geocode} 
+                    pathOptions={marker.pathOptions} 
+                    radius={marker.range}
+                  >
+                  </Circle>
+                ))}
+              </MarkerClusterGroup>
+            </FeatureGroup>
+          </LayersControl.Overlay>
+          <LayersControl.Overlay name='show grid'>
+            <FeatureGroup>
+              <Grid
+                markerPosition={gridBottomLeft}
+                cellSize={cellSize}
+                xSize={xAxis}
+                ySize={yAxis}
+              />
+            </FeatureGroup>
+          </LayersControl.Overlay>
+          <LayersControl.Overlay name='show polar'>
+            <FeatureGroup>
+              <PolarGrid />
+            </FeatureGroup>
+          </LayersControl.Overlay>
+        </LayersControl>
+
+        <FeatureGroup>
+          <EditControl 
+            position='bottomright' 
+            onCreated={_create}
+          />
+        </FeatureGroup>
+      </MapContainer>
+    </>
   );
 }
 export default App;
