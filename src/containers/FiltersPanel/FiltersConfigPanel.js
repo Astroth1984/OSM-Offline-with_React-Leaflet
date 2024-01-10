@@ -5,123 +5,101 @@ import {MdArrowForwardIos, MdArrowBackIos} from 'react-icons/md'
 
 import myTower from '../../img/tower.png';
 import {PiChartPolarThin, PiGridNineThin} from 'react-icons/pi'
+import { CiBoxList } from 'react-icons/ci';
+import { MdOutlineDeleteForever } from 'react-icons/md';
 
-// const formReducer = (state, event) => {
-
-//     //reset Form Data after Submit
-//     if(event.reset) {
-//         return {
-//             type: '',
-//             'cell-size': 0,
-//             xAxis: 0,
-//             yAxis: 0,
-//         }
-//     }
-//     return {
-//         ...state,
-//         [event.name]: event.value
-//     }
-// }
-const formReducer = (state, event) => {
-    // Reset Form Data after Submit
-    if (event.reset) {
-        if (state.type === 'polar') {
-            return {
-                type: '',
-                sectors: '',
-                ranges: Array(state.ranges.length).fill('')
-            };
-        } else {
-            return {
-                type: '',
-                'cell-size': 0,
-                xAxis: 0,
-                yAxis: 0
-            };
-        }
-    }
-
-    // Handle different structures based on type
-    if (event.name === 'type') {
-        if (event.value === 'polar') {
-            return {
-                type: 'polar',
-                sectors: '',
-                ranges: Array(0).fill('')
-            };
-        } else {
-            return {
-                type: 'grid',
-                'cell-size': 0,
-                xAxis: 0,
-                yAxis: 0
-            };
-        }
-    }
-
-    return {
-        ...state,
-        [event.name]: event.value
-    };
-};
 
 const FiltersConfigPanel = ({ onMarkerSelect, onSubmitForm }) => {
-
-    const [selectedTypeOption, setSelectedTypeOption] = useState('grid');
-    const handleOptionChange = (e) => {
-        setSelectedTypeOption(e.target.value);
-    };
 
   /**
    * Form Handlers and Properties
    */
-  const [formData, setFormData] = useReducer(formReducer, {
-    //add default values
-    // type: 'grid',
-    // 'cell-size': 0,
-    // yAxis: 0,
-    // xAxis: 0
-  });
-  const [submitting, setSubmitting] = useState(false);
+//   const [formData, setFormData] = useReducer(formReducer, {
+//     //add default values
+//     // type: 'grid',
+//     // 'cell-size': 0,
+//     // yAxis: 0,
+//     // xAxis: 0
+//   });
+//   const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = event => {
-    event.preventDefault();
-    setSubmitting(true);
+//   const handleSubmit = event => {
+//     event.preventDefault();
+//     setSubmitting(true);
 
-    setTimeout(()=>{
-        setSubmitting(false);
-        setFormData({
-            reset: true,       
-        });
-    }, 3000);
+//     setTimeout(()=>{
+//         setSubmitting(false);
+//         setFormData({
+//             reset: true,       
+//         });
+//     }, 3000);
 
-    onSubmitForm(prev => [...prev, formData]);
-  }
+//     onSubmitForm(prev => [...prev, formData]);
+//   }
 
-  const handleChange = event => {
-    const isCheckbox = event.target.type === 'checkbox';
-    setFormData({
-        name: event.target.name,
-        value: isCheckbox ? event.target.checked : event.target.value
-    });
-  }
+//   const handleChange = event => {
+//     const isCheckbox = event.target.type === 'checkbox';
+//     setFormData({
+//         name: event.target.name,
+//         value: isCheckbox ? event.target.checked : event.target.value
+//     });
+//   }
 
   /************************/
   /**************** Polar Grid Form */
-  const [numberOfFields, setNumberOfFields] = useState(0);
-  const [inputValues, setInputValues] = useState([]);
+//   const [numberOfFields, setNumberOfFields] = useState(0);
+//   const [inputValues, setInputValues] = useState([]);
 
-  const handleNumberChange = (e) => {
-    const number = parseInt(e.target.value, 10);
-    setNumberOfFields(number);
-    setInputValues(Array(number).fill('')); // Initialize inputValues with an array of empty strings
-  };
+//   const handleNumberChange = (e) => {
+//     const number = parseInt(e.target.value, 10);
+//     setNumberOfFields(number);
+//     setInputValues(Array(number).fill('')); // Initialize inputValues with an array of empty strings
+//   };
 
-  const handlePolarInputChange = (index, value) => {
-    const newInputValues = [...inputValues];
-    newInputValues[index] = value;
-    setInputValues(newInputValues);
-  };
+//   const handlePolarInputChange = (index, value) => {
+//     const newInputValues = [...inputValues];
+//     newInputValues[index] = value;
+//     setInputValues(newInputValues);
+//   };
+
+
+    const [formType, setFormType] = useState('grid');
+    const [cellSize, setCellSize] = useState(0);
+    const [xAxis, setXAxis] = useState('');
+    const [yAxis, setYAxis] = useState('');
+    const [numRanges, setNumRanges] = useState(0);
+    const [rangesValues, setRangesValues] = useState([]);
+    const [gridData, setGridData] = useState([]);
+    const [polarData, setPolarData] = useState([]);
+
+
+    const handleTypeChange = (event) => {
+        setFormType(event.target.value);
+    };
+
+    const handleNumberChange = (e) => {
+        const number = parseInt(e.target.value, 10);
+        setNumRanges(number);
+        setRangesValues(Array(number).fill('')); // Initialize inputValues with an array of empty strings
+    };
+
+    const handlePolarInputChange = (index, value) => {
+        const newInputValues = [...rangesValues];
+        newInputValues[index] = value;
+        setRangesValues(newInputValues);
+    };
+
+    const handleCreateSubmit = event => {
+        event.preventDefault();
+        if(formType === 'grid') {
+            const gridObject = { type: 'grid', cellSize, xAxis, yAxis };
+            setGridData([...gridData, gridObject]);
+        }
+        if(formType === 'polar') {
+            const polarObject = { type: 'polar', numRanges, rangesValues: [...rangesValues.sort((a, b) => b - a)] };
+            setPolarData([...polarData, polarObject]);
+        }
+    }
   /****************************/ 
 
   const [showPanel, setShowPanel] = useState(false);
@@ -158,7 +136,7 @@ const FiltersConfigPanel = ({ onMarkerSelect, onSubmitForm }) => {
                     Inputs
                 </div>
                 <div className={ tabsToggleState === 2 ? 'tab-item active' : 'tab-item'} onClick={() => toggleTab(2)}>
-                    Add Filter
+                    <span style={{display:'flex', justifyContent: 'center', alignItems:'center', gap:'8px'}}>Add Filter<div className='saved-num'>{polarData.length + gridData.length}</div></span>
                 </div>
                 <div className={ tabsToggleState === 3 ? 'tab-item active' : 'tab-item'} onClick={() => toggleTab(3)}>
                     <span style={{display:'flex', justifyContent: 'center', alignItems:'center', gap:'8px'}}>Saved Filters <div className='saved-num'>12</div></span>
@@ -180,14 +158,13 @@ const FiltersConfigPanel = ({ onMarkerSelect, onSubmitForm }) => {
                                     <p><strong style={{fontSize: '14px', color: 'rgb(40, 116, 252)'}}>Lat:</strong> {marker.geocode[0]}</p>
                                     <p><strong style={{fontSize: '14px', color: 'rgb(40, 116, 252)'}}>Lang:</strong> {marker.geocode[1]}</p>
                                 </div>
-                            </div>
-                            
+                            </div> 
                       </>
                     ))}  
                 </div>
                 <div className={ tabsToggleState === 2 ? 'tab-content' : 'tab-pane'}>
                     <div className='wrapper'>
-                        {submitting && 
+                        {/* {submitting && 
                             <div>
                                 You are submitting the following:
                                 <ul>
@@ -196,8 +173,8 @@ const FiltersConfigPanel = ({ onMarkerSelect, onSubmitForm }) => {
                                     ))}
                                 </ul>
                             </div>
-                        }
-                        <form onSubmit={handleSubmit}>
+                        } */}
+                        {/* <form onSubmit={handleSubmit}>
                             <fieldset disabled={submitting} className='input-radio'>
                                 <label for="image-grid">
                                     <input
@@ -277,8 +254,121 @@ const FiltersConfigPanel = ({ onMarkerSelect, onSubmitForm }) => {
                             }
                             <button type='submit' disabled={submitting}>Submit</button>
                         </form>
-                        {formData.type}
+                        {formData.type} */}
+
+                        <form onSubmit={handleCreateSubmit}>
+                            <fieldset className='input-radio'>
+                                <label for="image-grid">
+                                    <input 
+                                        id='image-grid'
+                                        type='radio' 
+                                        value='grid' 
+                                        name='type' 
+                                        checked={formType === 'grid'} 
+                                        onChange={handleTypeChange} 
+                                    />
+                                    <PiGridNineThin size={60} className='filter-icon' />
+                                </label>
+                                <label for="image-polar">
+                                    <input 
+                                        id='image-polar'
+                                        type='radio' 
+                                        value='polar' 
+                                        name='type' 
+                                        checked={formType === 'polar'} 
+                                        onChange={handleTypeChange} 
+                                    />
+                                    <PiChartPolarThin size={60} className='filter-icon' />
+                                </label>
+                            </fieldset>
+                            
+
+                            {formType === 'grid' && (
+                                <div>
+                                    <input 
+                                        type="text" 
+                                        placeholder="Cell Size" 
+                                        value={cellSize} 
+                                        onChange={(e) => setCellSize(e.target.value)} 
+                                    />
+                                    <input 
+                                        type="text" 
+                                        placeholder="N° Cells on X-Axis" 
+                                        value={xAxis} 
+                                        onChange={(e) => setXAxis(e.target.value)} 
+                                    />
+                                    <input 
+                                        type="text" 
+                                        placeholder="N° Cells on Y-Axis" 
+                                        value={yAxis} 
+                                        onChange={(e) => setYAxis(e.target.value)} 
+                                    />
+                                </div>
+                            )}
+                            {formType === 'polar' && (
+                                <div>
+                                    <input 
+                                        type="number" 
+                                        placeholder="Number of ranges" 
+                                        value={numRanges} 
+                                        onChange={handleNumberChange} 
+                                    />
+                                    {rangesValues.map((value, index) => (
+                                        <input 
+                                            key={index} 
+                                            type="text" 
+                                            placeholder={`Range ${index}`}
+                                            onChange={(e) => handlePolarInputChange(index, e.target.value)}
+                                        />
+                                    ))}
+                                </div>
+                            )}
+                            <button type='submit'>Submit</button>
+                        </form>
                     </div>
+
+                    {gridData.map((grid, i) => (
+                        <div style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
+                            <div className='marker-element' key={i} style={{flex:5}}>
+                                <div className='item1'>
+                                    <PiGridNineThin size={120} className='marker-img' style={{padding:0, margin:0}} />
+                                </div>
+                                <div className='item2'>
+                                    <p><strong style={{fontSize: '14px', color: 'rgb(40, 116, 252)'}}>N° cells xAxis:</strong> {grid.xAxis}</p>
+                                    <p><strong style={{fontSize: '14px', color: 'rgb(40, 116, 252)'}}>Cell Size (NM):</strong> {grid.cellSize}</p>
+                                </div>
+                                <div className='item3'>
+                                    <p><strong style={{fontSize: '14px', color: 'rgb(40, 116, 252)'}}>N° cells yAxis:</strong> {grid.yAxis}</p>
+                                </div>
+                            </div>
+                            <div style={{flex:1, display:'flex', flexDirection:'column',justifyContent:'center', alignItems:'center', gap:'3px'}}>
+                                    <button className='action-btn apply'><CiBoxList size={25} /></button>
+                                    <button className='action-btn delete'><MdOutlineDeleteForever size={25} /></button>
+                            </div>
+                      </div>
+                    ))} 
+                    {polarData.map((polar, i) => (
+                        <div style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
+                            <div className='marker-element' key={i} style={{flex:5}}> 
+                                <div className='item1'>
+                                    <PiChartPolarThin size={120} className='marker-img' style={{padding:0, margin:0}} />
+                                </div>
+                                <div className='item2'>
+                                    <p><strong style={{fontSize: '14px', color: 'rgb(40, 116, 252)'}}>N° ranges:</strong> {polar.numRanges}</p>
+                                        <div style={{display:'flex', alignItems:'center', gap:'5px', margin:'3px 0'}}>
+                                            <p><strong style={{fontSize: '14px', color: 'rgb(40, 116, 252)'}}>ranges: </strong></p>
+                                            {polar.rangesValues.map((range, i) => (<div className='range' key={i}>{range}</div>))}
+                                        </div>
+                                </div>
+                            </div>
+                            <div style={{flex:1, display:'flex', flexDirection:'column',justifyContent:'center', alignItems:'center', gap:'3px'}}>
+                                <button className='action-btn apply'><CiBoxList size={25} /></button>
+                                <button className='action-btn delete'><MdOutlineDeleteForever size={25} /></button>
+
+                            </div>
+                            
+                        </div>
+                    ))}
                 </div>
                 <div className={ tabsToggleState === 3 ? 'tab-content' : 'tab-pane'}>
                     Saved Static Filters Goes here

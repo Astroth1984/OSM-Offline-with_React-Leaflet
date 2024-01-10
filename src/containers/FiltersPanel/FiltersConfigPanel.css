@@ -99,8 +99,9 @@
     padding: 5px;
     border-radius: 5px;
     max-width: 4rem;
-    max-height: 3rem;
+    max-height: 3.2rem;
     background-color: white;
+    border:2px solid rgba(40, 116, 252, 0.6);
 }
 
 .item1 { grid-area: marker-img; }
@@ -117,6 +118,9 @@
     padding: 5px;
     transition: all .5s ease;
     margin: 6px 0px;
+    border-radius: 8px;
+    /* box-shadow:  0 4px 4px 0 rgba(0, 0, 0, 0.2), 0 2px 4px 1px rgba(0, 0, 0, 0.19); */
+    border: 2px solid #eee;
 }
 
 .marker-element:hover{
@@ -144,6 +148,23 @@
     border-radius: 3px;
     font-size: 10px;
     box-shadow:  0 4px 8px 0 rgba(40, 116, 252, 0.4), 0 6px 20px 0 rgba(40, 116, 252, 0.3);
+}
+
+.range {
+    width: 18px;
+    height: 20px;
+    /* background-color: rgb(194, 191, 191); */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* color: white; */
+    border-radius: 3px;
+    padding: 2px;
+    font-size: 11px;
+    font-weight: 700;
+    border: 1px solid rgb(40, 116, 252);
+    /* box-shadow:  0 2px 2px 0 rgba(237, 237, 237, 0.4), 0 2px 1px 0 rgba(237, 237, 237, 0.3); */
+
 }
 
 
@@ -189,4 +210,33 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.action-btn {
+    width: 60%;
+    height: 30px;
+    background-color: white;
+    border-radius: 3px;
+    transition: all .3 ease-in-out;
+    cursor: pointer;
+}
+
+.apply {
+    color: #06a94d;
+    border: 1px solid #06a94d;
+}
+
+.delete {
+    color: #f30611;
+    border: 1px solid #f30611;
+}
+
+.apply:hover{
+    color:white;
+    background-color: #06a94d;
+}
+
+.delete:hover {
+    color: white;
+    background-color: #f30611;
 }
