@@ -1,5 +1,5 @@
 .toggle-left{
-    z-index: 10000;
+    z-index: 9999;
     position: absolute;
     bottom: 140px;
     left: -30px; 
@@ -151,7 +151,7 @@
 }
 
 .range {
-    width: 18px;
+    min-width: 18px;
     height: 20px;
     /* background-color: rgb(194, 191, 191); */
     display: flex;
@@ -159,7 +159,7 @@
     align-items: center;
     /* color: white; */
     border-radius: 3px;
-    padding: 2px;
+    padding: 2px 3px;
     font-size: 11px;
     font-weight: 700;
     border: 1px solid rgb(40, 116, 252);
@@ -239,4 +239,86 @@
 .delete:hover {
     color: white;
     background-color: #f30611;
+}
+
+
+/* Overlay Modal Css */
+.overlay {
+    z-index: 9999;
+    position: fixed;
+    left: 10px;
+    bottom: 10px;
+    width: 522px;
+    height: 372px;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.overlay-modal {
+    height: 300px;
+    width: 300px;
+    background-color: white;
+    border: 2px solid darkgrey;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;align-items: center;
+    flex-direction: column; 
+    gap: 3px;
+    overflow-y: scroll;
+}
+
+.overlay-modal-item {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 220px;
+    border: 2px solid darkgrey;
+    border-radius: 5px;
+}
+
+.overlay-modal-item:hover{
+    background-color: rgba(40, 116, 252, 0.2);
+    border-color: rgba(40, 116, 252);
+}
+
+.overlay-modal-footer {
+    position: fixed;
+    bottom: 20px;
+    left: 430px; 
+}
+
+.overlay-modal-btn {
+    width: 80px;
+    height: 28px;
+    border-radius: 5px;
+    background-color: #06a94d;
+    cursor: pointer;
+    color: white;
+    font-weight: 600;
+    border: 2px solid rgb(18, 196, 95);
+    box-shadow:  0 4px 2px 0 rgba(18, 196, 95, 0.4), 0 2px 8px 0 rgba(18, 196, 95, 0.3);
+}
+
+.nav-btn:disabled {
+    opacity: .3;
+}
+
+.nav-btn {
+    width: 70px;
+    height: 32px;
+    margin-right: 12px;
+    font-size: 11px;
+    border-radius: 5px;
+    background-color: white;
+    cursor: pointer;
+    color:rgb(40, 116, 252);
+    border: 2px solid rgb(40, 116, 252);
+    transition: all .3 ease-in-out;
+}
+
+.nav-btn:hover {
+    background-color:rgb(40, 116, 252);
+    color: white;
 }

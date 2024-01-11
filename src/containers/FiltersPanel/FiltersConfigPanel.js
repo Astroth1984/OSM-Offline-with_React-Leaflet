@@ -1,12 +1,12 @@
 import React, { useEffect, useReducer, useState } from 'react'
 import './FiltersConfigPanel.css'
 import markers from '../../data/markers';
-import {MdArrowForwardIos, MdArrowBackIos} from 'react-icons/md'
 
 import myTower from '../../img/tower.png';
 import {PiChartPolarThin, PiGridNineThin} from 'react-icons/pi'
 import { CiBoxList } from 'react-icons/ci';
-import { MdOutlineDeleteForever } from 'react-icons/md';
+import { FaList } from 'react-icons/fa';
+import { MdOutlineDeleteForever, MdOutlineAddBox, MdArrowForwardIos, MdArrowBackIos } from 'react-icons/md';
 
 
 const FiltersConfigPanel = ({ onMarkerSelect, onSubmitForm }) => {
@@ -102,7 +102,12 @@ const FiltersConfigPanel = ({ onMarkerSelect, onSubmitForm }) => {
     }
   /****************************/ 
 
+  const [showFrom, setShowForm] = useState(true);
+  const [showFiltersList, setShowFiltersList] = useState(false);
+
+  const [showModalOverlay, setShowModalOverlay] = useState(false);
   const [showPanel, setShowPanel] = useState(false);
+
   const [selectedMarker, setSelectedMarker] = useState(null);
 
   // Tabs toggle state
@@ -124,13 +129,39 @@ const FiltersConfigPanel = ({ onMarkerSelect, onSubmitForm }) => {
 
   return (
     <>
+        
         <div className='toggle-left' onClick={() => setShowPanel(!showPanel)}>
             <div style={{position:'absolute', right: '10px', bottom: '18px'}}>
                 {showPanel ? <MdArrowBackIos size={25} /> : <MdArrowForwardIos size={25} />}
             </div>
         </div>
 
+        
+
         <div className={`tab-container ${showPanel ? 'panel-visible' : 'panel-hidden'}`}>
+            
+            {showModalOverlay && (
+
+                <div className={`overlay ${showPanel ? 'panel-visible' : 'panel-hidden'}`} onClick={() => setShowModalOverlay(false)}>
+                    <div className='overlay-modal'>
+                        {markers.map((marker, i) => (
+                            <div className='overlay-modal-item'>
+                                <img className='marker-img' src={myTower} alt='tower' />
+                                <div style={{flex:1}}>{marker.id}</div>
+                                <div style={{flex:3}}>{marker.popUp}</div>
+                                <input style={{flex:1}} type='checkbox' checked disabled />
+                            </div>
+                        ))}
+                        {
+                            showPanel && (
+                                <div className='overlay-modal-footer'>
+                                    <button className='overlay-modal-btn'>Apply</button>
+                                </div>
+                            )
+                        } 
+                    </div>
+                </div>
+            )}
             <div className='tabs'>
                 <div className={ tabsToggleState === 1 ? 'tab-item active' : 'tab-item'} onClick={() => toggleTab(1)}>
                     Inputs
@@ -164,6 +195,10 @@ const FiltersConfigPanel = ({ onMarkerSelect, onSubmitForm }) => {
                 </div>
                 <div className={ tabsToggleState === 2 ? 'tab-content' : 'tab-pane'}>
                     <div className='wrapper'>
+                        <div style={{marginBottom:'10px', padding:'5px 0px'}}>
+                            <button  className='nav-btn add' disabled={showFrom} onClick={() => {setShowForm(true); setShowFiltersList(false)}}><MdOutlineAddBox size={20} /></button>
+                            <button className='nav-btn list' onClick={() => {setShowForm(false); setShowFiltersList(true)}} disabled={showFiltersList}><FaList size={20} /></button>
+                        </div>
                         {/* {submitting && 
                             <div>
                                 You are submitting the following:
@@ -255,120 +290,125 @@ const FiltersConfigPanel = ({ onMarkerSelect, onSubmitForm }) => {
                             <button type='submit' disabled={submitting}>Submit</button>
                         </form>
                         {formData.type} */}
-
-                        <form onSubmit={handleCreateSubmit}>
-                            <fieldset className='input-radio'>
-                                <label for="image-grid">
-                                    <input 
-                                        id='image-grid'
-                                        type='radio' 
-                                        value='grid' 
-                                        name='type' 
-                                        checked={formType === 'grid'} 
-                                        onChange={handleTypeChange} 
-                                    />
-                                    <PiGridNineThin size={60} className='filter-icon' />
-                                </label>
-                                <label for="image-polar">
-                                    <input 
-                                        id='image-polar'
-                                        type='radio' 
-                                        value='polar' 
-                                        name='type' 
-                                        checked={formType === 'polar'} 
-                                        onChange={handleTypeChange} 
-                                    />
-                                    <PiChartPolarThin size={60} className='filter-icon' />
-                                </label>
-                            </fieldset>
-                            
-
-                            {formType === 'grid' && (
-                                <div>
-                                    <input 
-                                        type="text" 
-                                        placeholder="Cell Size" 
-                                        value={cellSize} 
-                                        onChange={(e) => setCellSize(e.target.value)} 
-                                    />
-                                    <input 
-                                        type="text" 
-                                        placeholder="N° Cells on X-Axis" 
-                                        value={xAxis} 
-                                        onChange={(e) => setXAxis(e.target.value)} 
-                                    />
-                                    <input 
-                                        type="text" 
-                                        placeholder="N° Cells on Y-Axis" 
-                                        value={yAxis} 
-                                        onChange={(e) => setYAxis(e.target.value)} 
-                                    />
-                                </div>
-                            )}
-                            {formType === 'polar' && (
-                                <div>
-                                    <input 
-                                        type="number" 
-                                        placeholder="Number of ranges" 
-                                        value={numRanges} 
-                                        onChange={handleNumberChange} 
-                                    />
-                                    {rangesValues.map((value, index) => (
+                        {showFrom && (
+                            <form onSubmit={handleCreateSubmit}>
+                                <fieldset className='input-radio'>
+                                    <label for="image-grid">
                                         <input 
-                                            key={index} 
-                                            type="text" 
-                                            placeholder={`Range ${index}`}
-                                            onChange={(e) => handlePolarInputChange(index, e.target.value)}
+                                            id='image-grid'
+                                            type='radio' 
+                                            value='grid' 
+                                            name='type' 
+                                            checked={formType === 'grid'} 
+                                            onChange={handleTypeChange} 
                                         />
-                                    ))}
-                                </div>
-                            )}
-                            <button type='submit'>Submit</button>
-                        </form>
+                                        <PiGridNineThin size={60} className='filter-icon' />
+                                    </label>
+                                    <label for="image-polar">
+                                        <input 
+                                            id='image-polar'
+                                            type='radio' 
+                                            value='polar' 
+                                            name='type' 
+                                            checked={formType === 'polar'} 
+                                            onChange={handleTypeChange} 
+                                        />
+                                        <PiChartPolarThin size={60} className='filter-icon' />
+                                    </label>
+                                </fieldset>
+                                
+
+                                {formType === 'grid' && (
+                                    <div>
+                                        <input 
+                                            type="text" 
+                                            placeholder="Cell Size" 
+                                            value={cellSize} 
+                                            onChange={(e) => setCellSize(e.target.value)} 
+                                        />
+                                        <input 
+                                            type="text" 
+                                            placeholder="N° Cells on X-Axis" 
+                                            value={xAxis} 
+                                            onChange={(e) => setXAxis(e.target.value)} 
+                                        />
+                                        <input 
+                                            type="text" 
+                                            placeholder="N° Cells on Y-Axis" 
+                                            value={yAxis} 
+                                            onChange={(e) => setYAxis(e.target.value)} 
+                                        />
+                                    </div>
+                                )}
+                                {formType === 'polar' && (
+                                    <div>
+                                        <input 
+                                            type="number" 
+                                            placeholder="Number of ranges" 
+                                            value={numRanges} 
+                                            onChange={handleNumberChange} 
+                                        />
+                                        {rangesValues.map((value, index) => (
+                                            <input 
+                                                key={index} 
+                                                type="text" 
+                                                placeholder={`Range ${index}`}
+                                                onChange={(e) => handlePolarInputChange(index, e.target.value)}
+                                            />
+                                        ))}
+                                    </div>
+                                )}
+                                <button type='submit'>Submit</button>
+                            </form>
+                        )}
                     </div>
 
-                    {gridData.map((grid, i) => (
-                        <div style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
-                            <div className='marker-element' key={i} style={{flex:5}}>
-                                <div className='item1'>
-                                    <PiGridNineThin size={120} className='marker-img' style={{padding:0, margin:0}} />
-                                </div>
-                                <div className='item2'>
-                                    <p><strong style={{fontSize: '14px', color: 'rgb(40, 116, 252)'}}>N° cells xAxis:</strong> {grid.xAxis}</p>
-                                    <p><strong style={{fontSize: '14px', color: 'rgb(40, 116, 252)'}}>Cell Size (NM):</strong> {grid.cellSize}</p>
-                                </div>
-                                <div className='item3'>
-                                    <p><strong style={{fontSize: '14px', color: 'rgb(40, 116, 252)'}}>N° cells yAxis:</strong> {grid.yAxis}</p>
-                                </div>
-                            </div>
-                            <div style={{flex:1, display:'flex', flexDirection:'column',justifyContent:'center', alignItems:'center', gap:'3px'}}>
-                                    <button className='action-btn apply'><CiBoxList size={25} /></button>
-                                    <button className='action-btn delete'><MdOutlineDeleteForever size={25} /></button>
-                            </div>
-                      </div>
-                    ))} 
-                    {polarData.map((polar, i) => (
-                        <div style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
-                            <div className='marker-element' key={i} style={{flex:5}}> 
-                                <div className='item1'>
-                                    <PiChartPolarThin size={120} className='marker-img' style={{padding:0, margin:0}} />
-                                </div>
-                                <div className='item2'>
-                                    <p><strong style={{fontSize: '14px', color: 'rgb(40, 116, 252)'}}>N° ranges:</strong> {polar.numRanges}</p>
-                                        <div style={{display:'flex', alignItems:'center', gap:'5px', margin:'3px 0'}}>
-                                            <p><strong style={{fontSize: '14px', color: 'rgb(40, 116, 252)'}}>ranges: </strong></p>
-                                            {polar.rangesValues.map((range, i) => (<div className='range' key={i}>{range}</div>))}
+                    {showFiltersList && (
+                        <>
+                            {gridData.map((grid, i) => (
+                                <div style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
+                                    <div className='marker-element' key={i} style={{flex:5}}>
+                                        <div className='item1'>
+                                            <PiGridNineThin size={120} className='marker-img' style={{padding:0, margin:0}} />
                                         </div>
+                                        <div className='item2'>
+                                            <p><strong style={{fontSize: '14px', color: 'rgb(40, 116, 252)'}}>N° cells xAxis:</strong> {grid.xAxis}</p>
+                                            <p><strong style={{fontSize: '14px', color: 'rgb(40, 116, 252)'}}>Cell Size (NM):</strong> {grid.cellSize}</p>
+                                        </div>
+                                        <div className='item3'>
+                                            <p><strong style={{fontSize: '14px', color: 'rgb(40, 116, 252)'}}>N° cells yAxis:</strong> {grid.yAxis}</p>
+                                        </div>
+                                    </div>
+                                    <div style={{flex:1, display:'flex', flexDirection:'column',justifyContent:'center', alignItems:'center', gap:'3px'}}>
+                                            <button className='action-btn apply' onClick={() => setShowModalOverlay(true)}><CiBoxList size={25} /></button>
+                                            <button className='action-btn delete'><MdOutlineDeleteForever size={25} /></button>
+                                    </div>
+                            </div>
+                            ))} 
+                            {polarData.map((polar, i) => (
+                                <div style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
+                                    <div className='marker-element' key={i} style={{flex:5}}> 
+                                        <div className='item1'>
+                                            <PiChartPolarThin size={120} className='marker-img' style={{padding:0, margin:0}} />
+                                        </div>
+                                        <div className='item2'>
+                                            <p><strong style={{fontSize: '14px', color: 'rgb(40, 116, 252)'}}>N° ranges:</strong> {polar.numRanges}</p>
+                                                <div style={{display:'flex', alignItems:'center', gap:'5px', margin:'3px 0'}}>
+                                                    <p><strong style={{fontSize: '14px', color: 'rgb(40, 116, 252)'}}>ranges: </strong></p>
+                                                    {polar.rangesValues.map((range, i) => (<div className='range' key={i}>{range}</div>))}
+                                                </div>
+                                        </div>
+                                    </div>
+                                    <div style={{flex:1, display:'flex', flexDirection:'column',justifyContent:'center', alignItems:'center', gap:'3px'}}>
+                                        <button className='action-btn apply' onClick={() => setShowModalOverlay(true)}><CiBoxList size={25} /></button>
+                                        <button className='action-btn delete'><MdOutlineDeleteForever size={25} /></button>
+        
+                                    </div>
+                                    
                                 </div>
-                            </div>
-                            <div style={{flex:1, display:'flex', flexDirection:'column',justifyContent:'center', alignItems:'center', gap:'3px'}}>
-                                <button className='action-btn apply'><CiBoxList size={25} /></button>
-                                <button className='action-btn delete'><MdOutlineDeleteForever size={25} /></button>
-
-                            </div>
-                            
-                        </div>
-                    ))}
+                            ))}
+                        </>
+                    )}
                 </div>
                 <div className={ tabsToggleState === 3 ? 'tab-content' : 'tab-pane'}>
                     Saved Static Filters Goes here
