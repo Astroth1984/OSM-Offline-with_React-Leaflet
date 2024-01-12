@@ -1,6 +1,7 @@
 import React, { useEffect, useReducer, useState } from 'react'
 import './FiltersConfigPanel.css'
 import markers from '../../data/markers';
+import { v4 as uuidv4, v4 } from 'uuid'; 
 
 import myTower from '../../img/tower.png';
 import {PiChartPolarThin, PiGridNineThin} from 'react-icons/pi'
@@ -92,13 +93,15 @@ const FiltersConfigPanel = ({ onMarkerSelect, onSubmitForm }) => {
     const handleCreateSubmit = event => {
         event.preventDefault();
         if(formType === 'grid') {
-            const gridObject = { type: 'grid', cellSize, xAxis, yAxis };
+            const gridObject = { filterId: v4() , type: 'grid', cellSize, xAxis, yAxis };
             setGridData([...gridData, gridObject]);
         }
         if(formType === 'polar') {
-            const polarObject = { type: 'polar', numRanges, rangesValues: [...rangesValues.sort((a, b) => b - a)] };
+            const polarObject = { filterId: v4(), type: 'polar', numRanges, rangesValues: [...rangesValues.sort((a, b) => b - a)] };
             setPolarData([...polarData, polarObject]);
         }
+
+        gridData.map(grid => console.log(JSON.stringify(grid)));
     }
   /****************************/ 
 
@@ -218,7 +221,7 @@ const FiltersConfigPanel = ({ onMarkerSelect, onSubmitForm }) => {
                                         value='grid'
                                         id="image-grid"
                                         checked={selectedTypeOption === 'grid'}
-                                        onChange={handleOptionChange}
+                                        onChange={handle    OptionChange}
                                     />
                                     <PiGridNineThin size={60} className='filter-icon' />
                                 </label>
