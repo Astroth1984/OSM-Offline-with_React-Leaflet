@@ -1,0 +1,19 @@
+.title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.saved-num {
+    width: 23px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(40, 116, 252);
+    color: white;
+    border-radius: 3px;
+    font-size: 10px;
+    box-shadow:  0 4px 8px 0 rgba(40, 116, 252, 0.4), 0 6px 20px 0 rgba(40, 116, 252, 0.3);
+}

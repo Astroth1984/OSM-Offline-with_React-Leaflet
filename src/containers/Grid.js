@@ -15,6 +15,7 @@ const Grid = ({ markerPosition, cellSize, xSize, ySize }) => {
   }, [grid]);
 
   useEffect(() => {
+    
     if (markerPosition.length === 0) return;
 
     const lat = markerPosition[0];

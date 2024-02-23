@@ -24,8 +24,22 @@ const markers = [
       id: 4,
       geocode: [46.19190116548555, 6.163336889092037],
       popUp : "Sensor-Brussels",
-      range: 300,
+      range: 500,
       pathOptions: { color: 'green' }
+    },
+    {
+      id: 5,
+      geocode: [46.216137, 6.121795],
+      popUp : "Sensor-M34",
+      range: 900,
+      pathOptions: { color: 'magenta' }
+    },
+    {
+      id: 6,
+      geocode: [46.183671, 6.128661],
+      popUp : "Radar-test",
+      range: 900,
+      pathOptions: { color: 'yellow' }
     },
     
   ];

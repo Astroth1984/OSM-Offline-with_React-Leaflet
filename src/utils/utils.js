@@ -29,3 +29,23 @@ export const calculateIntersection = (center, range, angle) => {
 
     return intersectionPoint;
 };
+
+
+/**
+ * @param {max ring range} max 
+ * @param {distance between two rings} step 
+ * @returns [] - radius of rings in a descending order
+ */
+export const generateDescendingArray = (max, step) => {
+    if (max < 0 || step <= 0) {
+        console.error("Invalid parameters. Please provide non-negative values for max and a positive value for step.");
+        return [];
+      }
+    
+      const result = [];
+      for (let i = max; i > 0; i -= step) {
+        result.push(i);
+      }
+    
+      return result;
+}

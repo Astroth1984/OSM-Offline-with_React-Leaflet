@@ -1,0 +1,99 @@
+.overlay {
+    z-index: 9999;
+    position: fixed;
+    left: 10px;
+    bottom: 10px;
+    width: 522px;
+    height: 372px;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.overlay-modal {
+    height: 300px;
+    width: 300px;
+    background-color: white;
+    border: 2px solid darkgrey;
+    border-radius: 5px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column; 
+    gap: 3px;
+    overflow-y: scroll;
+    padding: 12px 0px;
+}
+
+.overlay-modal-item {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 220px;
+    border: 2px solid darkgrey;
+    border-radius: 5px;
+}
+
+.opacity-layer {
+    opacity: .5;
+    background-color: rgba(169, 169, 169, 0.4);
+}
+
+.overlay-modal-item.opacity-layer:hover{
+    background-color: rgba(169, 169, 169, 0.3);
+    border-color: darkgray;
+}
+
+.overlay-modal-item:hover{
+    background-color: rgba(40, 116, 252, 0.2);
+    border-color: rgba(40, 116, 252);
+}
+
+.overlay-modal-footer {
+    position: fixed;
+    bottom: 20px;
+    left: 430px; 
+}
+
+.overlay-modal-btn {
+    width: 80px;
+    height: 28px;
+    border-radius: 5px;
+    background-color: #06a94d;
+    cursor: pointer;
+    color: white;
+    font-weight: 600;
+    border: 2px solid rgb(18, 196, 95);
+    box-shadow:  0 4px 2px 0 rgba(18, 196, 95, 0.4), 0 2px 8px 0 rgba(18, 196, 95, 0.3);
+}
+
+.modal-img{
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    max-width: 4rem;
+    max-height: 3.2rem;
+    background-color: white;
+    border:2px solid rgba(40, 116, 252, 0.6);
+}
+
+.checkbox-id,
+.checkbox{
+    flex: 1;
+}
+
+.checkbox-popup {
+    flex: 3;
+}
+
+.overlay-modal-btn-close {
+    position: absolute;
+    top: 30px;
+    left: 390px; 
+    color: red;
+    cursor: pointer;
+}
+
+
+

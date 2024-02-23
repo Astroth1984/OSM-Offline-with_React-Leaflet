@@ -10,8 +10,7 @@ import {
   Popup, 
   LayersControl, 
   FeatureGroup,
-  Circle,
-  LayerGroup
+  Circle
 } 
 from 'react-leaflet';
 import L, {  Icon, divIcon, point } from 'leaflet';
@@ -21,8 +20,8 @@ import { EditControl } from 'react-leaflet-draw';
 import { useEffect, useState } from 'react';
 import Grid from './containers/Grid';
 import PolarGrid from './containers/PolarGrid';
-import { metersToNauticalMiles } from './utils/utils';
 import FiltersConfigPanel from './containers/FiltersPanel/FiltersConfigPanel';
+import { useMappedInputs } from './utils/useMappedInputs';
 
 
 delete L.Icon.Default.prototype._getIconUrl;
@@ -32,12 +31,35 @@ L.Icon.Default.mergeOptions({
   iconSize: [40, 40],
 });
 
+
+//divIcon element
+const createCustomIconClusterIcon = (cluster) => {
+  // Display what you want inside the Cluster Icon - In my case the number of markers inside the Cluster
+  return new divIcon({
+    html: `<div class="cluster-icon">${cluster.getChildCount()}</div>`,
+    className: "custom-marker-cluster",
+    iconSize: point(25,25, true)
+  });
+}
+
+const customIcon = new Icon({
+  iconUrl: require('./img/tower.png'),
+  iconSize: [40, 40], // size of the icon
+});
+
+
 function App() {
 
   const [center, setCenter] = useState([46.20482260019546, 6.14561285199199]);
-
   const [selectedMarker, setSelectedMarker] = useState(null);
+
   const [gridData, setGridData] = useState([]);
+  const [polarData, setPolarData] = useState([]);
+
+
+  const appliedGrids = useMappedInputs(gridData, markers);
+  const appliedPolars = useMappedInputs(polarData, markers);
+
   // Function to handle selected marker fromConfiguration Panel
   const handleMarkerSelect = (marker) => {
     setSelectedMarker(marker);
@@ -45,33 +67,6 @@ function App() {
     console.log(center);
     
   };
-
-  /**
-   * Grid Properties
-   * 
-   **/
-  const [gridBottomLeft, setGridBottomLeft] = useState([46.20066430916326, 6.141922132426539]);
-  const zoomGrid =  19; //max
-  const  cellSize = 180; //m
-  // const gridSize = 32 //rows
-  const xAxis = 7;
-  const yAxis = 7;
-
-  const customIcon = new Icon({
-    iconUrl: require('./img/tower.png'),
-    iconSize: [40, 40], // size of the icon
-  });
-
-  //divIcon element
-  const createCustomIconClusterIcon = (cluster) => {
-    // Display what you want inside the Cluster Icon - In my case the number of markers inside the Cluster
-    return new divIcon({
-      html: `<div class="cluster-icon">${cluster.getChildCount()}</div>`,
-      className: "custom-marker-cluster",
-      iconSize: point(25,25, true)
-    });
-  }
-
 
   /** 
   *
@@ -83,15 +78,21 @@ function App() {
  const _create = (e) => console.log(e);
 
  useEffect(() => {
-  console.log('this is grid data in App ', gridData)
- }, [center, gridData])
+  console.log('this is applied grid data in App ', appliedGrids)
+ }, [appliedGrids])
 
 
   return (
 
     <>
 
-      <FiltersConfigPanel onMarkerSelect={handleMarkerSelect} onSubmitForm={setGridData} />
+      <FiltersConfigPanel 
+        onMarkerSelect={handleMarkerSelect}
+        gridData={gridData}
+        polarData={polarData}
+        onSetGridData={setGridData}
+        onSetPolarData={setPolarData}
+      />
 
       <MapContainer 
         center={center} 
@@ -104,9 +105,6 @@ function App() {
           url='http://localhost:3001/tiles/{z}/{x}/{y}.png'
         />
 
-        
-
-        
         <LayersControl position='topright'>
           <LayersControl.Overlay checked name='Marker with pop up'>
             <FeatureGroup>
@@ -144,21 +142,34 @@ function App() {
               </MarkerClusterGroup>
             </FeatureGroup>
           </LayersControl.Overlay>
-          <LayersControl.Overlay name='show grid'>
-            <FeatureGroup>
-              <Grid
-                markerPosition={gridBottomLeft}
-                cellSize={cellSize}
-                xSize={xAxis}
-                ySize={yAxis}
-              />
-            </FeatureGroup>
-          </LayersControl.Overlay>
-          <LayersControl.Overlay name='show polar'>
-            <FeatureGroup>
-              <PolarGrid />
-            </FeatureGroup>
-          </LayersControl.Overlay>
+          {appliedGrids.length !== 0 && 
+            appliedGrids.map((appliedGrid, index) => (
+              <LayersControl.Overlay checked name={`grid - ${ index+1 }`}>
+                <FeatureGroup>
+                  <Grid
+                    key={index}
+                    markerPosition={appliedGrid.center}
+                    cellSize={appliedGrid.filterDef.cellSize}
+                    xSize={appliedGrid.filterDef.xAxis}
+                    ySize={appliedGrid.filterDef.yAxis}
+                  />
+                </FeatureGroup>
+              </LayersControl.Overlay>
+            ))
+          }
+          {appliedPolars.map((appliedPolar, index) => (
+            <LayersControl.Overlay checked name={`polar - ${ index+1 }`}>
+              <FeatureGroup>
+                  <PolarGrid
+                    key={index}
+                    center={appliedPolar.center}
+                    maxRange={appliedPolar.filterDef.maxRange}
+                    rangeStep={appliedPolar.filterDef.rangeStep}
+                    sectors={appliedPolar.filterDef.sectors}
+                  />
+              </FeatureGroup>
+            </LayersControl.Overlay>
+          ))}
         </LayersControl>
 
         <FeatureGroup>
@@ -169,6 +180,7 @@ function App() {
         </FeatureGroup>
       </MapContainer>
     </>
+    
   );
 }
 export default App;

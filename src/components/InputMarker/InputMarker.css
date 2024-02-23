@@ -1,0 +1,48 @@
+.marker-img{
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    max-width: 4rem;
+    max-height: 3.2rem;
+    background-color: white;
+    border:2px solid rgba(40, 116, 252, 0.6);
+}
+
+.item11 { grid-area: marker-img; }
+.item22 { grid-area: content-left; }
+.item33 { grid-area: content-right; }
+
+.marker-element {
+    display: grid;
+    grid-template-areas:
+        'marker-img content-left content-left content-left content-right content-right content-right';
+    gap: 10px;
+    grid-template-columns: 15% 15% 15%;
+    cursor: pointer;
+    padding: 5px;
+    transition: all .5s ease;
+    margin: 6px 0px;
+    border-radius: 8px;
+    border: 2px solid #eee;
+}
+
+.marker-attribute {
+    font-size: 14px;
+    color: rgb(40, 116, 252)
+}
+
+.marker-element:hover{
+    background-color: rgba(40, 116, 252, 0.2);
+    border-radius: 8px;
+}
+
+.selected, 
+.selected:hover {
+    background-color: rgba(40, 116, 252, 0.6);
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+}
+
+
+

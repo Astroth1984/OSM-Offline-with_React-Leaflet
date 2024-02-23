@@ -1,0 +1,82 @@
+.filter-icon {
+    width: 7rem;
+    height: 5rem;
+    border-radius: 8px;
+    color: rgb(88, 86, 86);
+    box-shadow:  0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.inputs-wrapper {
+    width: 90%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 15px 0px;
+    padding: 6px 12px;
+}
+
+.input-radio {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border: none;
+}
+ 
+.input-radio>label{
+     cursor: pointer;
+}
+ 
+.input-radio  input {
+     display: none;
+}
+
+.input-radio  input:checked + .filter-icon {
+    box-shadow: 0 0 0 5px rgb(40, 116, 252);
+}
+
+.input-field {
+    width: 45%;
+    height: 35px;
+    padding: 4px;
+    border: 2px solid darkgray;
+    border-radius: 5px;
+    font-weight: 400;
+    font-size: 18px;
+    outline: none;
+    color: rgb(54, 49, 49);
+    box-shadow:  0 2px 8px 0 rgba(0, 0, 0, 0.2), 0 2px 6px 0 rgba(0, 0, 0, 0.19);
+}
+
+input:focus, 
+select:focus {
+    border: 2px solid rgb(40, 116, 252);
+}
+
+.input-field:disabled {
+    background-color: rgba(169, 169, 169, .3);
+    color: rgba(54, 49, 49, .4);
+    box-shadow: none;
+    border: 1px solid darkgray;
+}
+
+.form-submit {
+    position: fixed;
+    bottom: 20px;
+    left: 410px;
+    margin: 12px;
+    width: 80px;
+    height: 28px;
+    border-radius: 5px;
+    background-color: #06a94d;
+    cursor: pointer;
+    color: white;
+    font-weight: 600;
+    border: 2px solid rgb(18, 196, 95);
+    box-shadow:  0 4px 2px 0 rgba(18, 196, 95, 0.4), 0 2px 8px 0 rgba(18, 196, 95, 0.3);
+    opacity: .6;
+}
+
+.form-submit:hover {
+    opacity: 1;
+}

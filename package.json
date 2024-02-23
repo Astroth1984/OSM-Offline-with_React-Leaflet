@@ -10,6 +10,7 @@
     "express": "^4.18.2",
     "leaflet": "^1.9.4",
     "leaflet-draw": "^1.0.4",
+    "leaflet-semicircle": "^2.0.4",
     "leaflet-tilelayer-mbtiles": "^1.4.1",
     "Leaflet.TileLayer.MBTiles": "^1.0.0",
     "react": "^18.2.0",
@@ -19,6 +20,7 @@
     "react-leaflet-cluster": "^2.1.0",
     "react-leaflet-draw": "^0.20.4",
     "react-scripts": "5.0.1",
+    "react-windrose-chart": "^0.2.3",
     "sql.js": "^1.8.0",
     "uuid": "^9.0.1",
     "web-vitals": "^2.1.4"

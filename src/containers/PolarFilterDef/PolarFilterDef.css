@@ -1,0 +1,94 @@
+.polar-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.polar-img{
+    margin: 0px;
+    padding: 0px;
+    border-radius: 5px;
+    max-width: 4rem;
+    max-height: 3.2rem;
+    background-color: white;
+    border:2px solid rgba(40, 116, 252, 0.6);
+}
+
+.polar-item1 { grid-area: polar-img; }
+.polar-item2 { grid-area: polar-left; }
+.polar-item3 { grid-area: polar-right; }
+
+.polar-element {
+    display: grid;
+    grid-template-areas:
+        'polar-img polar-left polar-left polar-left polar-right polar-right polar-right';
+    gap: 10px;
+    grid-template-columns: 15% 15% 15%;
+    cursor: pointer;
+    padding: 5px;
+    transition: all .5s ease;
+    margin: 6px 0px;
+    border-radius: 8px;
+    border: 2px solid #eee;
+    flex: 5;
+}
+
+.polar-attribute {
+    font-size: 14px;
+    color: rgb(40, 116, 252)
+}
+
+.polar-element:hover{
+    background-color: rgba(40, 116, 252, 0.2);
+    border-radius: 8px;
+}
+
+.ranges-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin: 3px 8px;
+    flex-wrap: wrap;
+}
+
+.range {
+    min-width: 18px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 3px;
+    padding: 2px 3px;
+    font-size: 11px;
+    font-weight: 700;
+    border: 1px solid rgb(40, 116, 252);
+}
+
+.action-btn {
+    width: 60%;
+    height: 30px;
+    background-color: white;
+    border-radius: 3px;
+    transition: all .3 ease-in-out;
+    cursor: pointer;
+}
+
+.apply {
+    color: #06a94d;
+    border: 1px solid #06a94d;
+}
+
+.delete {
+    color: #f30611;
+    border: 1px solid #f30611;
+}
+
+.apply:hover{
+    color:white;
+    background-color: #06a94d;
+}
+
+.delete:hover {
+    color: white;
+    background-color: #f30611;
+}

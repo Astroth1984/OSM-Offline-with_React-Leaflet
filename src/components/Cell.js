@@ -1,11 +1,17 @@
 // Cell.js
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Rectangle } from 'react-leaflet';
 
 const Cell = (props) => {
-  const refCell = useRef();
-  const [color, setColor] = useState(props.color ? props.color : 'rgb(125,125,125)');
-
+  
+  const [pathOptions, setPathOptions] = useState({
+    stroke: 'false',
+    fillOpacity: '0.2',
+    opacity: '1',
+    weight: '2',
+    fillColor: 'rgb(125,125,125)',
+    color: 'rgba(0,0,0, 0.5)',
+  });
 
   function trace() {
     console.log.apply(console, arguments);
@@ -13,22 +19,46 @@ const Cell = (props) => {
 
   useEffect(() => {
     trace('Cell.useEffect[props.color]', props.id, props.color);
-    setColor(props.color ? props.color : 'rgb(125,125,125)');
   }, [props.color, props.id]);
 
-  
-
-  const pathOptions = {
-    stroke: 'false',
-    fillOpacity: props.color ? '0.7' : '0.5',
-    opacity: '1.0',
-    weight: '2',
-    fillColor: color,
-    color: color,
+  const handleMouseOver = (event) => {
+    // Check if the Shift key is pressed
+    if (event.originalEvent.shiftKey && pathOptions.color !== 'green') {
+      // Change the color to green when hovering with Shift key pressed
+      setPathOptions(
+        {
+          stroke: 'false',
+          fillOpacity: '0.6',
+          opacity: '1',
+          weight: '4',
+          fillColor: 'green',
+          color: 'green',
+        }
+      );
+      console.log(event)
+    }
   };
 
-  return <Rectangle ref={refCell} bounds={props.bounds} {...pathOptions}  />;
-
+  const handleClick = () => {
+    if (pathOptions.fillColor !== 'rgb(125,125,125)') {
+      setPathOptions(
+        {
+          stroke: 'false',
+          fillOpacity: '0.2',
+          opacity: '1',
+          weight: '2',
+          fillColor: 'rgb(125,125,125)',
+          color: 'rgba(0,0,0, 0.5)',
+        }
+      );
+    }
+  };
+  return( 
+    <Rectangle 
+      bounds={props.bounds} 
+      pathOptions={pathOptions} 
+      eventHandlers={{ mouseover: handleMouseOver, click: handleClick,}}
+    />
+  )
 };
-
 export default Cell;
