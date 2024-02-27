@@ -1,11 +1,19 @@
 import React from 'react';
 import './InputMarker.css';
 import myTower from '../../img/tower.png';
+import { useMap } from 'react-leaflet';
 
 const InputMarker = ({marker, selectedMarker, handleMarkerClick}) => {
 
+  const map = useMap();
+
+  const handleClick = () => {
+    handleMarkerClick(marker);
+    map.flyTo(marker.geocode, 16)
+  }
+
   return (
-    <div className={selectedMarker?.id === marker.id ? 'marker-element selected' : 'marker-element'} key={marker.id} onClick={() => handleMarkerClick(marker)}>
+    <div className={selectedMarker?.id === marker.id ? 'marker-element selected' : 'marker-element'} key={marker.id} onClick={handleClick}>
         <div className='item11'>
             <img className='marker-img' src={myTower} alt='tower' />
         </div>
