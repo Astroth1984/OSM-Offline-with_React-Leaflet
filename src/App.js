@@ -10,7 +10,7 @@ import {
   Popup, 
   LayersControl, 
   FeatureGroup,
-  Circle
+  Circle,
 } 
 from 'react-leaflet';
 import L, {  Icon, divIcon, point } from 'leaflet';
@@ -79,20 +79,15 @@ function App() {
 
  useEffect(() => {
   console.log('this is applied grid data in App ', appliedGrids)
- }, [appliedGrids])
+ }, [appliedGrids]);
+
 
 
   return (
 
     <>
 
-      <FiltersConfigPanel 
-        onMarkerSelect={handleMarkerSelect}
-        gridData={gridData}
-        polarData={polarData}
-        onSetGridData={setGridData}
-        onSetPolarData={setPolarData}
-      />
+      
 
       <MapContainer 
         center={center} 
@@ -103,6 +98,14 @@ function App() {
       >
         <TileLayer 
           url='http://localhost:3001/tiles/{z}/{x}/{y}.png'
+        />
+
+        <FiltersConfigPanel 
+          onMarkerSelect={handleMarkerSelect}
+          gridData={gridData}
+          polarData={polarData}
+          onSetGridData={setGridData}
+          onSetPolarData={setPolarData}
         />
 
         <LayersControl position='topright'>
